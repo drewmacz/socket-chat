@@ -18,16 +18,28 @@ app.get('/', function(req, res) {
 // HANDLE EVENTS
 //==============================================================================
 io.on('connection', function(socket) {
-  console.log('user connected');
-  socket.broadcast.emit('user connected');
+  var addUser = false;
 
-  socket.on('chat message', function(msg) {
-    io.emit('chat message', msg);
-    console.log('message: ' + msg);
+  socket.on('add user', function(username) {
+    if (addUser) return;
+
+    socket.username = username;
+
+    socket.emit('login');
+    socket.broadcast.emit('user connected');
+  });
+
+  socket.on('chat message', function(message) {
+    io.emit('chat message', {
+      username: socket.username,
+      text: message
+    });
   });
 
   socket.on('disconnect', function() {
-    console.log('user disconnected');
+    socket.broadcast.emit('user disconnected', {
+      username: socket.username
+    });
   });
 });
 

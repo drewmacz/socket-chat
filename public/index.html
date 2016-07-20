@@ -12,11 +12,16 @@
   <body ng-app="chatClient" ng-controller="chatCtrl">
     <ul id="messages">
       <li ng-repeat="message in messages track by $index">
-        {{message}}
+        {{message.username}}: {{message.text}}
       </li>
     </ul>
-    <form>
-      <input ng-model="inputText" autocomplete="off" /><button ng-click="send()">Send</button>
+    <form ng-hide="loggedIn">
+      <input ng-model="inputText" autocomplete="off" />
+      <button ng-click="login()">Login</button>
+    </form>
+    <form ng-show="loggedIn">
+      <input ng-model="inputText" autocomplete="off" />
+      <button ng-click="send()">Send</button>
     </form>
   </body>
 </html>
