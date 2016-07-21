@@ -1,0 +1,10 @@
+{
+  "name": "socket-chat",
+  "description": "a test of socket.io",
+  "main": "server.js",
+  "authors": [
+    "Andrew Maczugowski <amaczugowski@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/amaczugowski/socket-chat"
+}

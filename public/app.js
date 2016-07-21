@@ -17,8 +17,10 @@ app.controller('chatCtrl', function($scope) {
   // SOCKET EVENTS
   //============================================================================
   socket.on('connected', function(data) {
-    users = data.users;
-    Materialize.toast('users connected: ' + users.length, 2000);
+    $scope.$apply(function() {
+      $scope.users = data.users;
+    });
+    Materialize.toast('users connected: ' + $scope.users.length, 2000);
   });
 
   // user logged in
@@ -34,7 +36,7 @@ app.controller('chatCtrl', function($scope) {
   // tried to log in, but someone already
   //   has the username
   socket.on('username taken', function() {
-    Materialize.toast('Username taken', 3000);
+    Materialize.toast('username taken', 2000);
   });
 
   // someone sent a message to the server
@@ -43,6 +45,7 @@ app.controller('chatCtrl', function($scope) {
     $scope.$apply(function() {
       $scope.messages.push(message);
     });
+    window.scrollTo(0, document.body.scrollHeight);
   });
 
   // a new user connected
@@ -51,6 +54,7 @@ app.controller('chatCtrl', function($scope) {
       $scope.users = data.users;
       $scope.messages.push({text: data.username + ' connected'});
     });
+    window.scrollTo(0,document.body.scrollHeight);
   });
 
   // a user disconnected
@@ -59,6 +63,7 @@ app.controller('chatCtrl', function($scope) {
       $scope.users = data.users;
       $scope.messages.push({text: data.username + ' disconnected'});
     });
+    window.scrollTo(0,document.body.scrollHeight);
   });
 
   // PAGE FUNCTIONS
@@ -73,7 +78,7 @@ app.controller('chatCtrl', function($scope) {
       $scope.inputText = '';
     }
     else {
-      Materialize.toast('Username must be 1-20 characters', 3000);
+      Materialize.toast('username must be 1-20 characters', 3000);
     }
   };
 
@@ -85,7 +90,7 @@ app.controller('chatCtrl', function($scope) {
       $scope.inputText = '';
     }
     else {
-      Materialize.toast('Message must be 1-500 characters', 3000);
+      Materialize.toast('message must be 1-500 characters', 3000);
     }
   };
 
