@@ -44,6 +44,12 @@ span {
   word-break: break-all;
 }
 
+input[type='text'],
+input[type='number'],
+textarea {
+  font-size: 16px;
+}
+
 .fixed-row {
   width: 100%;
   position: fixed;
