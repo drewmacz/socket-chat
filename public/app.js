@@ -9,18 +9,32 @@ app.controller('chatCtrl', function($scope) {
   // FIELDS
   //============================================================================
   $scope.loggedIn = false;
+  $scope.username = '';
   $scope.inputText = '';
+  $scope.users = [];
   $scope.messages = [];
 
   // SOCKET EVENTS
   //============================================================================
+  socket.on('connected', function(data) {
+    users = data.users;
+    Materialize.toast('users connected: ' + users.length, 2000);
+  });
+
   // user logged in
-  socket.on('login', function() {
+  socket.on('login', function(user) {
     // set the view to submit messages
     //   instead of log in
     $scope.$apply(function() {
       $scope.loggedIn = true;
+      $scope.username = user.username;
     });
+  });
+
+  // tried to log in, but someone already
+  //   has the username
+  socket.on('username taken', function() {
+    Materialize.toast('Username taken', 3000);
   });
 
   // someone sent a message to the server
@@ -31,20 +45,48 @@ app.controller('chatCtrl', function($scope) {
     });
   });
 
+  // a new user connected
+  socket.on('user connected', function(data) {
+    $scope.$apply(function() {
+      $scope.users = data.users;
+      $scope.messages.push({text: data.username + ' connected'});
+    });
+  });
+
+  // a user disconnected
+  socket.on('user disconnected', function(data) {
+    $scope.$apply(function() {
+      $scope.users = data.users;
+      $scope.messages.push({text: data.username + ' disconnected'});
+    });
+  });
+
   // PAGE FUNCTIONS
   //============================================================================
   // logs the user in with the specified username
   //   taken from inputText
   $scope.login = function() {
-    socket.emit('add user', $scope.inputText);
-    $scope.inputText = '';
+    // do not allow blank usernames and usernames
+    //   longer than 20 characters
+    if ($scope.inputText !== '' && $scope.inputText.length <= 20) {
+      socket.emit('add user', $scope.inputText);
+      $scope.inputText = '';
+    }
+    else {
+      Materialize.toast('Username must be 1-20 characters', 3000);
+    }
   };
 
   // called when the send button is pressed
   // sends their message to the server
   $scope.send = function() {
-    socket.emit('chat message', $scope.inputText);
-    $scope.inputText = '';
+    if ($scope.inputText !== '' && $scope.inputText.length <= 500) {
+      socket.emit('chat message', $scope.inputText);
+      $scope.inputText = '';
+    }
+    else {
+      Materialize.toast('Message must be 1-500 characters', 3000);
+    }
   };
 
 });

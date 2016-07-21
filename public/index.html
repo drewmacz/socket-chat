@@ -2,26 +2,63 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
-    <link rel="stylesheet" href="app.css"></link>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="components/Materialize/dist/css/materialize.min.css"></link>
+    <link type="text/css" rel="stylesheet" href="app.css"></link>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
+
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  <script type="text/javascript"
-    src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
-  </script>
+  <script type="text/javascript" src="components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="components/Materialize/dist/js/materialize.min.js"></script>
   <script type="text/javascript" src="app.js"></script>
-  <body ng-app="chatClient" ng-controller="chatCtrl">
-    <ul id="messages">
-      <li ng-repeat="message in messages track by $index">
-        {{message.username}}: {{message.text}}
-      </li>
-    </ul>
-    <form ng-hide="loggedIn">
-      <input ng-model="inputText" autocomplete="off" />
-      <button ng-click="login()">Login</button>
-    </form>
-    <form ng-show="loggedIn">
-      <input ng-model="inputText" autocomplete="off" />
-      <button ng-click="send()">Send</button>
-    </form>
+
+  <body class="" ng-app="chatClient" ng-controller="chatCtrl">
+    <nav>
+      <div class="nav-wrapper green lighten-1">
+        <a ng-hide="loggedIn" class="brand-logo center">Socket Chat</a>
+        <a ng-show="loggedIn" class="brand-logo center">{{username}}</a>
+      </div>
+    </nav>
+    <div class="row">
+      <div ng-repeat="message in messages track by $index">
+        <div ng-hide="message.username === username || message.username === undefined">
+          <div class="col s10 m6 l4 offset-m1 offset-l3">
+            <div class="card-panel grey">
+              <span class=" white-text">
+                <strong>{{message.username}}</strong>: {{message.text}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div ng-show="message.username === username">
+          <div class="col s10 m6 l4 offset-s2 offset-m5 offset-l5">
+            <div class="card-panel teal lighten-1">
+              <span class=" white-text">
+                <strong>{{message.username}}</strong>: {{message.text}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div ng-show="message.username === undefined">
+          <div class="col s12">
+            <p class="center-align grey-text">{{message.text}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="row">
+        <form class="col s12" ng-hide="loggedIn">
+          <input class="input-field col m10 s9" placeholder="enter a username" type="text" ng-model="inputText" autocomplete="off">
+          <button class="col m2 s3 waves-effect waves-light btn" ng-click="login()">Login</button>
+        </form>
+        <form class="col s12" ng-show="loggedIn">
+          <input class="input-field col m10 s9" placeholder="type a message" type="text" ng-model="inputText" autocomplete="off">
+          <button class="col m2 s3 waves-effect waves-light btn" ng-click="send()">Send</button>
+        </form>
+      </div>
+    </footer>
   </body>
 </html>

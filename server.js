@@ -17,16 +17,36 @@ app.get('/', function(req, res) {
 
 // HANDLE EVENTS
 //==============================================================================
+var connectedUsers = [];
+
 io.on('connection', function(socket) {
   var addUser = false;
+
+  socket.emit('connected', {
+    users: connectedUsers
+  });
 
   socket.on('add user', function(username) {
     if (addUser) return;
 
-    socket.username = username;
+    for (var i = connectedUsers.length - 1; i >= 0; i--) {
+      if (connectedUsers[i] === username) {
+        socket.emit('username taken');
+        return;
+      }
+    }
 
-    socket.emit('login');
-    socket.broadcast.emit('user connected');
+    addUser = true;
+    socket.username = username;
+    connectedUsers.push(username);
+
+    socket.emit('login', {
+      username: socket.username
+    });
+    io.emit('user connected', {
+      username: socket.username,
+      users: connectedUsers
+    });
   });
 
   socket.on('chat message', function(message) {
@@ -37,9 +57,23 @@ io.on('connection', function(socket) {
   });
 
   socket.on('disconnect', function() {
-    socket.broadcast.emit('user disconnected', {
-      username: socket.username
-    });
+    if (addUser) {
+      // remove the disconned user from list of
+      //   all connected users
+      for (var i = connectedUsers.length - 1; i >= 0; i--) {
+        if (connectedUsers[i] === socket.username) {
+          connectedUsers.splice(i, 1);
+          break;
+        }
+      }
+
+      // send an event to the clients and pass
+      //   the new list of users
+      io.emit('user disconnected', {
+        username: socket.username,
+        users: connectedUsers
+      });
+    }
   });
 });
 
