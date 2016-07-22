@@ -19,6 +19,7 @@ app.get('/', function(req, res) {
 //==============================================================================
 // list of currently connected users
 var connectedUsers = [];
+var typingUsers = [];
 
 io.on('connection', function(socket) {
   var addUser = false;
@@ -63,6 +64,30 @@ io.on('connection', function(socket) {
     io.emit('chat message', {
       username: socket.username,
       text: message
+    });
+  });
+
+  // this user has started typing
+  socket.on('start typing', function() {
+    typingUsers.push(socket.username);
+    // send the updated list of typing users
+    io.emit('user typing', {
+      typing: typingUsers
+    });
+  });
+
+  // this user has stopped typing
+  socket.on('stop typing', function() {
+    // remove the user from typingUsers
+    for (var i = typingUsers.length - 1; i >= 0; i--) {
+      if (typingUsers[i] === socket.username) {
+        typingUsers.splice(i, 1);
+        break;
+      }
+    }
+    // send the updated list of typing users
+    io.emit('user typing', {
+      typing: typingUsers
     });
   });
 

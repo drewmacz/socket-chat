@@ -1,5 +1,5 @@
 body {
-  padding-bottom: 65px;
+  padding-bottom: 50px;
 }
 
 nav {
@@ -28,12 +28,17 @@ nav .brand-logo {
     }
 }
 
+.navbar-fixed {
+    height: 60px;
+    line-height: 60px;
+}
+
 footer {
   background-color: white;
   position: fixed;
   bottom: -20px;
   width: 100%;
-  padding-top: 6px;
+  padding-top: 8px;
 }
 
 a {
@@ -50,6 +55,14 @@ textarea {
   font-size: 16px;
 }
 
+input, select, textarea{
+    color: #0d0d0d;
+}
+
+textarea:focus, input:focus {
+    color: #0d0d0d;
+}
+
 .fixed-row {
   width: 100%;
   position: fixed;
@@ -57,6 +70,8 @@ textarea {
   word-break: break-all;
 }
 
-.top-padding {
-  padding-top: 40px;
+.padding-row {
+  width: 100%;
+  top: 60px;
+  word-break: break-all;
 }

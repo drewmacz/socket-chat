@@ -2,7 +2,7 @@
 var app = angular.module('chatClient', []);
 
 // controller for index
-app.controller('chatCtrl', function($scope) {
+app.controller('chatCtrl', function($scope, $timeout) {
   // use socket
   var socket = io();
 
@@ -13,6 +13,9 @@ app.controller('chatCtrl', function($scope) {
   $scope.inputText = '';
   $scope.users = [];
   $scope.messages = [];
+  $scope.typingUsers = [];
+  $scope.showUsers = true;
+  $scope.typing = false;
 
   // SOCKET EVENTS
   //============================================================================
@@ -20,7 +23,7 @@ app.controller('chatCtrl', function($scope) {
     $scope.$apply(function() {
       $scope.users = data.users;
     });
-    Materialize.toast('users connected: ' + $scope.users.length, 2000);
+    Materialize.toast('users connected: ' + $scope.users.length, 900);
   });
 
   // user logged in
@@ -44,6 +47,15 @@ app.controller('chatCtrl', function($scope) {
     // add the new message with the view
     $scope.$apply(function() {
       $scope.messages.push(message);
+    });
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+  // someone has started or stopped typing
+  socket.on('user typing', function(data) {
+    // update the list of typing users
+    $scope.$apply(function() {
+      $scope.typingUsers = data.typing;
     });
     window.scrollTo(0, document.body.scrollHeight);
   });
@@ -88,10 +100,47 @@ app.controller('chatCtrl', function($scope) {
     if ($scope.inputText !== '' && $scope.inputText.length <= 500) {
       socket.emit('chat message', $scope.inputText);
       $scope.inputText = '';
+      $scope.stopTyping();
     }
     else {
       Materialize.toast('message must be 1-500 characters', 3000);
     }
+  };
+
+  // called every time the message input changes
+  // tells the server the user is typing and
+  //   sets a timer that will tell the server
+  //   they are not typing when it finishes
+  var inputChangedPromise;
+  $scope.inputChanged = function() {
+    if (inputChangedPromise) {
+      $timeout.cancel(inputChangedPromise);
+    }
+    inputChangedPromise = $timeout(function() {
+      $scope.stopTyping();
+    }, 1500);
+    $scope.startTyping();
+  };
+
+  // called when the user is typing a message
+  // tells the server that the user has
+  //   started typing
+  $scope.startTyping = function() {
+    if (!$scope.typing) {
+      socket.emit('start typing');
+    }
+    $scope.typing = true;
+  };
+
+  // called when the user has stopped
+  //   typing a message
+  // tells the server that the user has
+  //   stopped typing
+  $scope.stopTyping = function() {
+    if ($scope.typing) {
+      socket.emit('stop typing');
+    }
+    $scope.typing = false;
   };
 
 });
