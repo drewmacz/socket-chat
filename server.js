@@ -62,12 +62,17 @@ io.on('connection', function(socket) {
 
   // this user sent a chat message
   socket.on('chat message', function(message) {
-    // send the message to all users
-    io.emit('chat message', {
-      username: socket.username,
-      text: message,
-      color: socket.color
-    });
+    if (socket.username !== undefined) {
+      // send the message to all users
+      io.emit('chat message', {
+        username: socket.username,
+        text: message,
+        color: socket.color
+      });
+    }
+    else {
+      socket.emit('logged out');
+    }
   });
 
   // this user has started typing

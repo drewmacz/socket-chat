@@ -63,6 +63,11 @@ app.controller('chatCtrl', function($scope, $timeout) {
     window.scrollTo(0, document.body.scrollHeight);
   });
 
+  // you are not logged in probably due to inactivity
+  socket.on('logged out', function() {
+    Materialize.toast('logged out due to inactivity', 2000);
+  });
+
   // a new user connected
   socket.on('user connected', function(data) {
     $scope.$apply(function() {
