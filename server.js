@@ -30,26 +30,28 @@ io.on('connection', function(socket) {
   });
 
   // this user is trying to log on
-  socket.on('add user', function(username) {
+  socket.on('add user', function(user) {
     // check if the user has already
     //   logged in
     if (addUser) return;
 
     // check if the username is taken
     for (var i = connectedUsers.length - 1; i >= 0; i--) {
-      if (connectedUsers[i] === username) {
+      if (connectedUsers[i] === user.username) {
         socket.emit('username taken');
         return;
       }
     }
 
     addUser = true;
-    socket.username = username;
-    connectedUsers.push(username);
+    socket.username = user.username;
+    socket.color = user.color;
+    connectedUsers.push(user.username);
 
     // tell this user they are logged in
     socket.emit('login', {
-      username: socket.username
+      username: socket.username,
+      color: socket.color
     });
     // tell everyone this user logged in
     io.emit('user connected', {
@@ -63,7 +65,8 @@ io.on('connection', function(socket) {
     // send the message to all users
     io.emit('chat message', {
       username: socket.username,
-      text: message
+      text: message,
+      color: socket.color
     });
   });
 

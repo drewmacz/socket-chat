@@ -10,6 +10,8 @@ app.controller('chatCtrl', function($scope, $timeout) {
   //============================================================================
   $scope.loggedIn = false;
   $scope.username = '';
+  $scope.selectedColor = 'red';
+  $scope.navColor = 'blue-grey';
   $scope.inputText = '';
   $scope.users = [];
   $scope.messages = [];
@@ -33,6 +35,7 @@ app.controller('chatCtrl', function($scope, $timeout) {
     $scope.$apply(function() {
       $scope.loggedIn = true;
       $scope.username = user.username;
+      $scope.navColor = user.color;
     });
   });
 
@@ -86,7 +89,10 @@ app.controller('chatCtrl', function($scope, $timeout) {
     // do not allow blank usernames and usernames
     //   longer than 20 characters
     if ($scope.inputText !== '' && $scope.inputText.length <= 20) {
-      socket.emit('add user', $scope.inputText);
+      socket.emit('add user', {
+        username: $scope.inputText,
+        color: $scope.selectedColor
+      });
       $scope.inputText = '';
     }
     else {
@@ -142,5 +148,28 @@ app.controller('chatCtrl', function($scope, $timeout) {
     }
     $scope.typing = false;
   };
+
+  // called on page load
+  // randomly selects a color for the user
+  $scope.selectRandomColor = function() {
+    var random = Math.floor(Math.random() * 5);
+    switch(random) {
+      case 0:
+        $scope.selectedColor = 'red';
+        break;
+      case 1:
+        $scope.selectedColor = 'blue';
+        break;
+      case 2:
+        $scope.selectedColor = 'green';
+        break;
+      case 3:
+        $scope.selectedColor = 'orange';
+        break;
+      default:
+        $scope.selectedColor = 'purple';
+    }
+  };
+  $scope.selectRandomColor();
 
 });
