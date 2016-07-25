@@ -26,7 +26,7 @@ app.controller('chatCtrl', function($scope, $timeout) {
     $scope.$apply(function() {
       $scope.users = data.users;
     });
-    Materialize.toast('users connected: ' + $scope.users.length, 900);
+    Materialize.toast('users connected: ' + $scope.users.length, 1000);
 
     if ($scope.loggedIn === true) {
       // connection to server was lost
