@@ -32,7 +32,7 @@
       </nav>
     </div>
     <div class="row fixed-row">
-      <div class="col s12 grey center white-text" ng-show="users.length > 0 && !showUsers">
+      <div class="col s12 grey center white-text" ng-show="users.length === 0 || !showUsers">
         {{users.length}} online
       </div>
       <div class="col s12 grey center white-text" ng-show="users.length > 0 && showUsers">
