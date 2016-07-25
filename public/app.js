@@ -2,7 +2,7 @@
 var app = angular.module('chatClient', []);
 
 // controller for index
-app.controller('chatCtrl', function($scope, $timeout) {
+app.controller('chatCtrl', function($scope, $window, $timeout) {
   // use socket
   var socket = io();
 
@@ -180,6 +180,10 @@ app.controller('chatCtrl', function($scope, $timeout) {
     }
     $scope.typing = false;
   };
+
+  $scope.redirectToGithub = function() {
+    $window.open('http://github.com/amaczugowski/socket-chat');
+  }
 
   // called on page load
   // randomly selects a color for the user

@@ -21,7 +21,7 @@
           <a ng-hide="loggedIn" class="brand-logo center">Socket Chat</a>
           <a ng-show="loggedIn" class="brand-logo center">{{username}}</a>
           <ul class="left">
-            <li><a href="http://github.com/amaczugowski/socket-chat"><i class="material-icons">code</i></a></li>
+            <li><a ng-click="redirectToGithub()"><i class="material-icons">code</i></a></li>
           </ul>
           <ul ng-show="users.length > 0" class="right">
             <li><a ng-hide="showUsers" ng-click="showUsers = !showUsers"><i class="material-icons">expand_more</i></a></li>
