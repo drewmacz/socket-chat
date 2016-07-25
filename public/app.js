@@ -12,6 +12,7 @@ app.controller('chatCtrl', function($scope, $timeout) {
   $scope.username = '';
   $scope.selectedColor = 'red';
   $scope.navColor = 'blue-grey';
+  $scope.buttonColor = 'teal';
   $scope.inputText = '';
   $scope.users = [];
   $scope.messages = [];
@@ -26,6 +27,15 @@ app.controller('chatCtrl', function($scope, $timeout) {
       $scope.users = data.users;
     });
     Materialize.toast('users connected: ' + $scope.users.length, 900);
+
+    if ($scope.loggedIn === true) {
+      // connection to server was lost
+      // try to log back in
+      $scope.$apply(function() {
+        $scope.inputText = $scope.username;
+        $scope.login();
+      });
+    }
   });
 
   // user logged in
@@ -36,13 +46,30 @@ app.controller('chatCtrl', function($scope, $timeout) {
       $scope.loggedIn = true;
       $scope.username = user.username;
       $scope.navColor = user.color;
+      $scope.buttonColor = user.color;
     });
   });
 
   // tried to log in, but someone already
   //   has the username
   socket.on('username taken', function() {
-    Materialize.toast('username taken', 2000);
+    if ($scope.loggedIn) {
+      // user lost connection to the server
+      //   and then someone else took their
+      //   username
+      // reset the application state
+      $scope.$apply(function() {
+        $scope.loggedIn = false;
+        $scope.username = '';
+        $scope.navColor = 'blue-grey';
+        $scope.buttonColor = 'teal';
+        $scope.inputText = '';
+      });
+      Materialize.toast('logged out due to inactivity');
+    }
+    else {
+      Materialize.toast('username taken', 2000);
+    }
   });
 
   // someone sent a message to the server
