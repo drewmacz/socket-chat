@@ -30,7 +30,7 @@ app.controller('chatCtrl', function($scope, $timeout) {
 
     if ($scope.loggedIn === true) {
       // connection to server was lost
-      // try to log back in
+      // try to log back in with same username
       $scope.$apply(function() {
         $scope.inputText = $scope.username;
         $scope.login();
@@ -65,7 +65,7 @@ app.controller('chatCtrl', function($scope, $timeout) {
         $scope.buttonColor = 'teal';
         $scope.inputText = '';
       });
-      Materialize.toast('logged out due to inactivity');
+      Materialize.toast('logged out due to inactivity', 2000);
     }
     else {
       Materialize.toast('username taken', 2000);
