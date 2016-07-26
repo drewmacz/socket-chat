@@ -34,7 +34,7 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
       //   while the user was logged in
       // try to log back in with same username
       $scope.$apply(function() {
-        $scope.messages.push({text: $scope.username + ' disconnected'})
+        $scope.messages.push({text: $scope.username + ' disconnected'});
         $scope.inputText = $scope.username;
         $scope.login();
       });
