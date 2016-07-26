@@ -22,16 +22,19 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
 
   // SOCKET EVENTS
   //============================================================================
+  // user established initial connection to the server
   socket.on('connected', function(data) {
     $scope.$apply(function() {
       $scope.users = data.users;
     });
     Materialize.toast('users connected: ' + $scope.users.length, 1000);
 
-    if ($scope.loggedIn === true) {
-      // connection to server was lost
+    if ($scope.loggedIn) {
+      // connection to server was lost at some point
+      //   while the user was logged in
       // try to log back in with same username
       $scope.$apply(function() {
+        $scope.messages.push({text: $scope.username + ' disconnected'})
         $scope.inputText = $scope.username;
         $scope.login();
       });
@@ -90,7 +93,8 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
     window.scrollTo(0, document.body.scrollHeight);
   });
 
-  // you are not logged in probably due to inactivity
+  // user tried to send a message, but
+  //   was not logged in
   socket.on('logged out', function() {
     Materialize.toast('logged out due to inactivity', 2000);
   });
