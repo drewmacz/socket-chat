@@ -95,6 +95,23 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
     Materialize.toast('logged out due to inactivity', 2000);
   });
 
+  socket.on('log out', function() {
+    if ($scope.loggedIn) {
+      // user lost connection to the server
+      //   and then someone else took their
+      //   username
+      // reset the application state
+      $scope.$apply(function() {
+        $scope.loggedIn = false;
+        $scope.username = '';
+        $scope.navColor = 'blue-grey';
+        $scope.buttonColor = 'teal';
+        $scope.inputText = '';
+      });
+      Materialize.toast('logged out', 2000);
+    }
+  });
+
   // a new user connected
   socket.on('user connected', function(data) {
     $scope.$apply(function() {
@@ -181,8 +198,20 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
     $scope.typing = false;
   };
 
-  $scope.redirectToGithub = function() {
-    $window.open('http://github.com/amaczugowski/socket-chat');
+  $scope.logOut = function() {
+    if ($scope.loggedIn) {
+      socket.emit('log out');
+    }
+    $scope.closeSideNav();
+  };
+
+  $scope.closeSideNav = function() {
+    $('.button-collapse').sideNav('hide');
+  }
+
+  $scope.redirectTo = function(url) {
+    $window.open(url);
+    $scope.closeSideNav();
   }
 
   // called on page load

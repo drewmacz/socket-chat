@@ -99,11 +99,62 @@ io.on('connection', function(socket) {
     });
   });
 
+  socket.on('log out', function() {
+    // check if the user was logged in
+    //   before they left
+    if (addUser) {
+      // remove the user from typingUsers
+      for (var i = typingUsers.length - 1; i >= 0; i--) {
+        if (typingUsers[i] === socket.username) {
+          typingUsers.splice(i, 1);
+          break;
+        }
+      }
+      // send the updated list of typing users
+      io.emit('user typing', {
+        typing: typingUsers
+      });
+
+      // remove the disconned user from list of
+      //   all connected users
+      for (var i = connectedUsers.length - 1; i >= 0; i--) {
+        if (connectedUsers[i] === socket.username) {
+          connectedUsers.splice(i, 1);
+          break;
+        }
+      }
+
+      // send an event to the clients and pass
+      //   the new list of users
+      io.emit('user disconnected', {
+        username: socket.username,
+        users: connectedUsers
+      });
+
+      addUser = false;
+      socket.username = undefined;
+      socket.color = undefined;
+      socket.emit('log out');
+    }
+  });
+
   // this user disconnected
   socket.on('disconnect', function() {
     // check if the user was logged in
     //   before they left
     if (addUser) {
+      // remove the user from typingUsers
+      for (var i = typingUsers.length - 1; i >= 0; i--) {
+        if (typingUsers[i] === socket.username) {
+          typingUsers.splice(i, 1);
+          break;
+        }
+      }
+      // send the updated list of typing users
+      io.emit('user typing', {
+        typing: typingUsers
+      });
+
       // remove the disconned user from list of
       //   all connected users
       for (var i = connectedUsers.length - 1; i >= 0; i--) {

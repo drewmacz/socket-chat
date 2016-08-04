@@ -18,19 +18,42 @@
   <body ng-app="chatClient" ng-controller="chatCtrl">
     <div class="navbar-fixed">
       <nav>
-        <div class="nav-wrapper darken-1" ng-class="navColor">
+        <div class="nav-wrapper darken-1 fade" ng-class="selectedColor">
           <a ng-hide="loggedIn" class="brand-logo center">Socket Chat</a>
           <a ng-show="loggedIn" class="brand-logo center">{{username}}</a>
           <ul class="left">
-            <li><a ng-click="redirectToGithub()"><i class="material-icons">code</i></a></li>
+            <li><a href="#" data-activates="side-nav" class="button-collapse"><i class="material-icons">menu</i></a></li>
           </ul>
           <ul ng-show="users.length > 0" class="right">
             <li><a ng-hide="showUsers" ng-click="showUsers = !showUsers"><i class="material-icons">expand_more</i></a></li>
             <li><a ng-show="showUsers" ng-click="showUsers = !showUsers"><i class="material-icons">expand_less</i></a></li>
           </ul>
+          <ul id="side-nav" class="side-nav darken-3" ng-class="selectedColor">
+            <li>
+              <a class="white-text waves-effect" ng-click="redirectTo('http://www.github.com/amaczugowski/socket-chat/')"><i class="material-icons left">code</i>Source Code</a>
+            </li>
+            <li>
+              <a class="white-text waves-effect" ng-click="redirectTo('http://amaczugowski.github.io/')"><i class="material-icons left">person_outline</i>Developer's Website</a>
+            </li>
+            <li ng-show="loggedIn">
+              <a class="white-text waves-effect" ng-click="logOut()"><i class="material-icons left">arrow_back</i>Log Out</a>
+            </li>
+            <li>
+              <div class="side-nav-bottom">
+                <a class="white-text about-title">
+                  <i class="material-icons left">info_outline</i><strong>About the Project</strong>
+                </a>
+                <p class="white-text side-padding about-text">This is a instant messaging application designed by Andrew Maczugowski to become familiar with Socket.IO. Communication is real-time, and there is no chat history, so only connected users will be able to see what you send.</p>
+              </div>
+            </li>
+          </ul>
         </div>
       </nav>
     </div>
+    <script>
+      // Initialize Materialize side nav
+      $(".button-collapse").sideNav();
+    </script>
     <div class="row fixed-row">
       <div class="col s12 grey center white-text" ng-show="users.length === 0 || !showUsers">
         {{users.length}} online
@@ -92,21 +115,23 @@
       </div>
       <div class="row">
         <form class="col s12" ng-hide="loggedIn">
-          <input class="input-field col m10 s9"
+          <input class="input-field col m10 s9 no-background"
+            ng-class="selectedColor"
             placeholder="enter a username"
             type="text"
             ng-model="inputText"
             autocomplete="off">
-          <button class="col m2 s3 waves-effect waves-light btn" ng-click="login()">Login</button>
+          <button class="col m2 s3 waves-effect waves-light btn fade" ng-class="selectedColor" ng-click="login()">Login</button>
         </form>
         <form class="col s12" ng-show="loggedIn">
-          <input class="input-field col m10 s9"
+          <input class="input-field col m10 s9 no-background"
+            ng-class="selectedColor"
             placeholder="type a message"
             type="text"
             ng-change="inputChanged()"
             ng-model="inputText"
             autocomplete="off">
-          <button class="col m2 s3 waves-effect waves-light btn" ng-class="buttonColor" ng-click="send()">Send</button>
+          <button class="col m2 s3 waves-effect waves-light btn fade" ng-class="buttonColor" ng-click="send()">Send</button>
         </form>
       </div>
     </footer>

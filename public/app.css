@@ -21,6 +21,42 @@ nav .brand-logo {
     font-size: 1.6rem;
 }
 
+nav a.button-collapse {
+    display: inline-block;
+}
+
+.side-nav {
+  top: 60px;
+}
+
+.side-padding {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.side-nav-bottom {
+  position: fixed;
+  bottom: 120px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.about-title {
+  background-color: rgba(0, 0, 0, 0.15) !important;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+}
+
+.about-text {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  line-height: 24px !important;
+}
+
 @media only screen and (min-width: 601px){
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
         height: 60px;
@@ -34,25 +70,50 @@ nav .brand-logo {
 }
 
 footer {
-  background-color: white;
-  position: fixed;
-  bottom: -20px;
-  width: 100%;
-  padding-top: 8px;
+    background-color: white;
+    position: fixed;
+    bottom: -20px;
+    width: 100%;
+    padding-top: 8px;
 }
 
 a {
-  color: white;
+    color: white;
 }
 
 span {
-  word-break: break-all;
+    word-break: break-all;
 }
 
 input[type='text'],
 input[type='number'],
 textarea {
-  font-size: 16px;
+    font-size: 16px;
+}
+
+input.no-background {
+  background-color: transparent !important;
+}
+
+input.red:focus {
+  border-bottom: 1px solid tomato !important;
+  box-shadow: 0 1px 0 0 tomato !important;
+}
+input.blue:focus {
+  border-bottom: 1px solid dodgerblue !important;
+  box-shadow: 0 1px 0 0 dodgerblue !important;
+}
+input.green:focus {
+  border-bottom: 1px solid mediumseagreen !important;
+  box-shadow: 0 1px 0 0 mediumseagreen !important;
+}
+input.orange:focus {
+  border-bottom: 1px solid darkorange !important;
+  box-shadow: 0 1px 0 0 darkorange !important;
+}
+input.purple:focus {
+  border-bottom: 1px solid darkorchid !important;
+  box-shadow: 0 1px 0 0 darkorchid !important;
 }
 
 input, select, textarea{
@@ -64,18 +125,23 @@ textarea:focus, input:focus {
 }
 
 .fixed-row {
-  width: 100%;
-  position: fixed;
-  top: 60px;
-  word-break: break-all;
+    width: 100%;
+    position: fixed;
+    top: 60px;
+    word-break: break-all;
 }
 
 .padding-row {
-  width: 100%;
-  top: 60px;
-  word-break: break-all;
+    width: 100%;
+    top: 60px;
+    word-break: break-all;
 }
 
 .login-padding {
-  padding-bottom: 80px;
+    padding-bottom: 80px;
+}
+
+.fade {
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
 }
