@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>Socket Chat</title>
+    <meta name="author" content="Andrew Maczugowski <amaczugowski@gmail.com>">
+    <meta name="description" content="A website where users can chat freely.">
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="components/Materialize/dist/css/materialize.min.css"></link>
@@ -71,9 +73,9 @@
       </div>
     </div>
     <div class="row">
-      <div ng-repeat="message in messages track by $index">
+      <div class="row no-margin" ng-repeat="message in messages track by $index">
         <div ng-hide="message.username === username || message.username === undefined">
-          <div class="col s10 m6 l4 offset-m1 offset-l3">
+          <div class="col s10 m7 l4 offset-m1 offset-l3">
             <div class="card-panel lighten-2" ng-class="message.color">
               <span class=" white-text">
                 <strong>{{message.username}}</strong>: {{message.text}}
@@ -81,8 +83,8 @@
             </div>
           </div>
         </div>
-        <div ng-show="message.username === username">
-          <div class="col s10 m6 l4 offset-s2 offset-m5 offset-l5">
+        <div class="row no-margin" ng-show="message.username === username">
+          <div class="col s10 m7 l4 offset-s2 offset-m4 offset-l5">
             <div class="card-panel" ng-class="message.color">
               <span class="white-text">
                 <strong>{{message.username}}</strong>: {{message.text}}
@@ -90,13 +92,13 @@
             </div>
           </div>
         </div>
-        <div ng-show="message.username === undefined">
+        <div class="row no-margin" ng-show="message.username === undefined">
           <div class="col s12">
             <p class="center-align grey-text">{{message.text}}</p>
           </div>
         </div>
       </div>
-      <div ng-repeat="user in typingUsers track by $index">
+      <div class="row no-margin" ng-repeat="user in typingUsers track by $index">
         <div ng-show="user !== username" class="col s12">
           <p class="center-align grey-text">{{user}} is typing...</p>
         </div>
@@ -104,7 +106,7 @@
     </div>
     <div class="login-padding" ng-hide="loggedIn"></div>
     <footer>
-      <div class="row" ng-hide="loggedIn">
+      <div class="row no-margin color-row" ng-hide="loggedIn">
         <div class="col s12 center-align">
           <a class="btn-floating btn-large waves-effect waves-light red" ng-click="selectedColor = 'red'"><i ng-show="selectedColor === 'red'" class="material-icons">done</i></a>
           <a class="btn-floating btn-large waves-effect waves-light blue" ng-click="selectedColor = 'blue'"><i ng-show="selectedColor === 'blue'" class="material-icons">done</i></a>
@@ -113,7 +115,7 @@
           <a class="btn-floating btn-large waves-effect waves-light purple" ng-click="selectedColor = 'purple'"><i ng-show="selectedColor === 'purple'" class="material-icons">done</i></a>
         </div>
       </div>
-      <div class="row">
+      <div class="row no-margin">
         <form class="col s12" ng-hide="loggedIn">
           <input class="input-field col m10 s9 no-background"
             ng-class="selectedColor"
