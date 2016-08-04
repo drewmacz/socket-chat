@@ -99,6 +99,7 @@ io.on('connection', function(socket) {
     });
   });
 
+  // user requested to be logged out
   socket.on('log out', function() {
     // check if the user was logged in
     //   before they left

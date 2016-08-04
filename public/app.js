@@ -99,6 +99,7 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
     Materialize.toast('logged out due to inactivity', 2000);
   });
 
+  // user requested to manually be logged out
   socket.on('log out', function() {
     if ($scope.loggedIn) {
       // user lost connection to the server
@@ -202,6 +203,10 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
     $scope.typing = false;
   };
 
+  // called when the user presses the
+  //   log out button
+  // tells the server to manually log
+  //   the user out
   $scope.logOut = function() {
     if ($scope.loggedIn) {
       socket.emit('log out');
@@ -209,10 +214,13 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
     $scope.closeSideNav();
   };
 
+  // collapses the side navbar
   $scope.closeSideNav = function() {
     $('.button-collapse').sideNav('hide');
   }
 
+  // opens url in a new tab or window
+  //   and collapses the side navbar
   $scope.redirectTo = function(url) {
     $window.open(url);
     $scope.closeSideNav();
