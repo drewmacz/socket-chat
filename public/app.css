@@ -174,8 +174,8 @@ textarea:focus, input:focus {
 }
 
 .fade {
-    -webkit-transition: all .5s ease;
-    transition: all .5s ease;
+    -webkit-transition: all .6s ease;
+    transition: all .6s ease;
 }
 
 .no-margin {
@@ -195,5 +195,5 @@ textarea:focus, input:focus {
   font-size: 15px;
   padding-top: 16px;
   padding-bottom: 16px;
-  border-radius: 4px;
+  border-radius: 24px;
 }
