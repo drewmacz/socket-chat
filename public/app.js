@@ -15,7 +15,7 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
   $scope.buttonColor = 'teal';
   $scope.inputText = '';
   $scope.users = [];
-  $scope.messages = [];
+  $scope.messages = [{username: 'bob', text: 'testing chat bubbles', color: 'blue'}, {username: 'bob', text: 'testing chat bubbles', color: 'blue'}];
   $scope.typingUsers = [];
   $scope.showUsers = true;
   $scope.typing = false;
@@ -80,6 +80,9 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
     // add the new message with the view
     $scope.$apply(function() {
       $scope.messages.push(message);
+      if ($scope.hasMessageAbove($scope.messages.length - 1)) {
+
+      }
     });
     window.scrollTo(0, document.body.scrollHeight);
   });
@@ -212,6 +215,33 @@ app.controller('chatCtrl', function($scope, $window, $timeout) {
       socket.emit('log out');
     }
     $scope.closeSideNav();
+  };
+
+  // checks if the message above the
+  //   one at index is from the same
+  //   user
+  // returns true if it is
+  $scope.hasMessageAbove = function(index) {
+    if (index - 1 < 0) {
+      return false;
+    }
+    if ($scope.messages[index].username === $scope.messages[index - 1].username) {
+      return true;
+    }
+    return false;
+  };
+
+  // checks if the message below is
+  //   from the same user
+  // returns true if it is
+  $scope.hasMessageBelow = function(index) {
+    if (index + 1 < $scope.messages.length) {
+      return false;
+    }
+    if ($scope.messages[index].username === $scope.messages[index + 1].username) {
+      return true;
+    }
+    return false;
   };
 
   // collapses the side navbar

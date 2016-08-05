@@ -192,8 +192,18 @@ textarea:focus, input:focus {
 }
 
 .card-panel {
+  min-width: 1px;
+  max-width: 80%;
   font-size: 15px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   border-radius: 26px;
+}
+
+.left-has-message-below {
+  border-bottom-left-radius: 2px;
+}
+
+.left-has-message-above {
+  border-top-left-radius: 2px;
 }
