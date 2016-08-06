@@ -197,3 +197,8 @@ textarea:focus, input:focus {
   padding-bottom: 16px;
   border-radius: 26px;
 }
+
+.inactive-link {
+  pointer-events: none;
+  cursor: default;
+}
